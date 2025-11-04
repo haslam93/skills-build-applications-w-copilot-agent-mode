@@ -45,31 +45,62 @@ const Workouts: React.FC = () => {
     }
   };
 
-  if (loading) return <div className="text-center">Loading workouts...</div>;
-  if (error) return <div className="alert alert-danger">Error: {error}</div>;
+  if (loading) return (
+    <div className="loading-spinner">
+      <div className="spinner-border text-primary" role="status">
+        <span className="visually-hidden">Loading workouts...</span>
+      </div>
+    </div>
+  );
+  if (error) return <div className="alert alert-danger error-alert">Error: {error}</div>;
 
   return (
     <div>
-      <h2>Workouts</h2>
+      <h1 className="page-title">💪 Workouts</h1>
       <div className="row">
         {workouts.map((workout) => (
-          <div key={workout.id} className="col-md-6 col-lg-4 mb-3">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">{workout.name}</h5>
-                <p className="card-text">
-                  <strong>Description:</strong> {workout.description}<br />
-                  <strong>Suggested for:</strong> {workout.suggested_for}<br />
-                  <strong>Workout ID:</strong> {workout.id}
-                </p>
+          <div key={workout.id} className="col-md-6 col-lg-4 mb-4">
+            <div className="component-card card h-100">
+              <div className="card-body d-flex flex-column">
+                <div className="d-flex justify-content-between align-items-start mb-3">
+                  <h5 className="card-title text-primary">{workout.name}</h5>
+                  <span className="badge bg-secondary">#{workout.id}</span>
+                </div>
+                <p className="card-text flex-grow-1">{workout.description}</p>
+                <div className="mt-auto">
+                  <div className="mb-3">
+                    <small className="text-muted">Suggested for:</small>
+                    <br />
+                    <span className={`badge ${
+                      workout.suggested_for === 'Marvel' ? 'bg-danger' : 
+                      workout.suggested_for === 'DC' ? 'bg-info' : 
+                      'bg-primary'
+                    }`}>
+                      {workout.suggested_for}
+                    </span>
+                  </div>
+                  <div className="d-grid gap-2">
+                    <button className="btn btn-custom btn-sm">
+                      Start Workout
+                    </button>
+                    <button className="btn btn-outline-secondary btn-sm">
+                      View Details
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         ))}
       </div>
       {workouts.length === 0 && (
-        <div className="text-center">
-          <p>No workouts found.</p>
+        <div className="text-center py-5">
+          <div className="mb-3">
+            <i className="bi bi-journal-text" style={{fontSize: '3rem', color: '#6c757d'}}></i>
+          </div>
+          <h4 className="text-muted">No workouts available</h4>
+          <p className="text-muted">Create custom workouts to get started!</p>
+          <button className="btn btn-custom">Create Workout</button>
         </div>
       )}
     </div>

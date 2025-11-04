@@ -51,39 +51,72 @@ const Leaderboard: React.FC = () => {
     }
   };
 
-  if (loading) return <div className="text-center">Loading leaderboard...</div>;
-  if (error) return <div className="alert alert-danger">Error: {error}</div>;
+  if (loading) return (
+    <div className="loading-spinner">
+      <div className="spinner-border text-primary" role="status">
+        <span className="visually-hidden">Loading leaderboard...</span>
+      </div>
+    </div>
+  );
+  if (error) return <div className="alert alert-danger error-alert">Error: {error}</div>;
 
   return (
     <div>
-      <h2>Leaderboard</h2>
-      <div className="table-responsive">
-        <table className="table table-striped">
-          <thead className="table-dark">
+      <h1 className="page-title">🏆 Leaderboard</h1>
+      <div className="table-container">
+        <table className="table table-hover mb-0">
+          <thead>
             <tr>
-              <th>Rank</th>
+              <th style={{width: '80px'}}>Rank</th>
               <th>Team</th>
-              <th>Points</th>
+              <th style={{width: '120px'}}>Points</th>
+              <th style={{width: '120px'}}>Badge</th>
             </tr>
           </thead>
           <tbody>
             {leaderboard.map((entry, index) => (
               <tr key={entry.id}>
                 <td>
-                  <span className={`badge ${index === 0 ? 'bg-warning' : index === 1 ? 'bg-secondary' : index === 2 ? 'bg-warning text-dark' : 'bg-primary'}`}>
+                  <span className={`badge fs-6 ${
+                    index === 0 ? 'badge-rank-1' : 
+                    index === 1 ? 'badge-rank-2' : 
+                    index === 2 ? 'badge-rank-3' : 
+                    'bg-primary'
+                  }`}>
                     #{index + 1}
                   </span>
                 </td>
-                <td>{entry.team?.name || 'Unknown Team'}</td>
-                <td>{entry.points}</td>
+                <td>
+                  <div className="d-flex align-items-center">
+                    <div className="me-3">
+                      {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🏅'}
+                    </div>
+                    <div>
+                      <strong className="fs-5">{entry.team?.name || 'Unknown Team'}</strong>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span className="fw-bold text-success fs-5">{entry.points}</span>
+                </td>
+                <td>
+                  {index === 0 && <span className="badge bg-warning text-dark">Champion</span>}
+                  {index === 1 && <span className="badge bg-secondary">Runner-up</span>}
+                  {index === 2 && <span className="badge bg-info">Third Place</span>}
+                  {index > 2 && <span className="badge bg-light text-dark">Competitor</span>}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
       {leaderboard.length === 0 && (
-        <div className="text-center">
-          <p>No leaderboard data found.</p>
+        <div className="text-center py-5">
+          <div className="mb-3">
+            <i className="bi bi-trophy" style={{fontSize: '3rem', color: '#6c757d'}}></i>
+          </div>
+          <h4 className="text-muted">No leaderboard data found</h4>
+          <p className="text-muted">Start competing to see rankings!</p>
         </div>
       )}
     </div>

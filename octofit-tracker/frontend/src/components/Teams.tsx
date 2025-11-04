@@ -43,29 +43,65 @@ const Teams: React.FC = () => {
     }
   };
 
-  if (loading) return <div className="text-center">Loading teams...</div>;
-  if (error) return <div className="alert alert-danger">Error: {error}</div>;
+  if (loading) return (
+    <div className="loading-spinner">
+      <div className="spinner-border text-primary" role="status">
+        <span className="visually-hidden">Loading teams...</span>
+      </div>
+    </div>
+  );
+  if (error) return <div className="alert alert-danger error-alert">Error: {error}</div>;
 
   return (
     <div>
-      <h2>Teams</h2>
-      <div className="row">
-        {teams.map((team) => (
-          <div key={team.id} className="col-md-6 col-lg-4 mb-3">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">{team.name}</h5>
-                <p className="card-text">
-                  <strong>Team ID:</strong> {team.id}
-                </p>
-              </div>
-            </div>
-          </div>
-        ))}
+      <h1 className="page-title">👥 Teams</h1>
+      <div className="table-container">
+        <table className="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th style={{width: '80px'}}>ID</th>
+              <th>Team Name</th>
+              <th style={{width: '120px'}}>Status</th>
+              <th style={{width: '150px'}}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {teams.map((team) => (
+              <tr key={team.id}>
+                <td>
+                  <span className="badge bg-secondary">{team.id}</span>
+                </td>
+                <td>
+                  <div className="d-flex align-items-center">
+                    <div className="me-3">
+                      {team.name === 'Marvel' ? '🕷️' : team.name === 'DC' ? '🦸' : '👥'}
+                    </div>
+                    <div>
+                      <strong className="fs-5">{team.name}</strong>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span className="badge bg-success">Active</span>
+                </td>
+                <td>
+                  <button className="btn btn-sm btn-outline-primary me-2">
+                    View Details
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       {teams.length === 0 && (
-        <div className="text-center">
-          <p>No teams found.</p>
+        <div className="text-center py-5">
+          <div className="mb-3">
+            <i className="bi bi-people" style={{fontSize: '3rem', color: '#6c757d'}}></i>
+          </div>
+          <h4 className="text-muted">No teams found</h4>
+          <p className="text-muted">Create your first team to get started!</p>
+          <button className="btn btn-custom">Create Team</button>
         </div>
       )}
     </div>

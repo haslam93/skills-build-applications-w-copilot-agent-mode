@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
+interface Team {
+  id: number;
+  name: string;
+}
+
 interface Activity {
   id: number;
   user: {
     id: number;
     name: string;
     email: string;
+    team?: Team;
   };
   type: string;
   duration: number;
@@ -50,31 +56,67 @@ const Activities: React.FC = () => {
     }
   };
 
-  if (loading) return <div className="text-center">Loading activities...</div>;
-  if (error) return <div className="alert alert-danger">Error: {error}</div>;
+  if (loading) return (
+    <div className="loading-spinner">
+      <div className="spinner-border text-primary" role="status">
+        <span className="visually-hidden">Loading activities...</span>
+      </div>
+    </div>
+  );
+  if (error) return <div className="alert alert-danger error-alert">Error: {error}</div>;
 
   return (
     <div>
-      <h2>Activities</h2>
-      <div className="row">
-        {activities.map((activity) => (
-          <div key={activity.id} className="col-md-6 col-lg-4 mb-3">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">{activity.type}</h5>
-                <p className="card-text">
-                  <strong>User:</strong> {activity.user?.name || 'Unknown'}<br />
-                  <strong>Duration:</strong> {activity.duration} minutes<br />
-                  <strong>Date:</strong> {new Date(activity.timestamp).toLocaleDateString()}
-                </p>
-              </div>
-            </div>
-          </div>
-        ))}
+      <h1 className="page-title">📊 Activities</h1>
+      <div className="table-container">
+        <table className="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Activity Type</th>
+              <th>User</th>
+              <th>Duration</th>
+              <th>Date</th>
+              <th>Team</th>
+            </tr>
+          </thead>
+          <tbody>
+            {activities.map((activity) => (
+              <tr key={activity.id}>
+                <td>
+                  <span className="badge bg-primary">{activity.type}</span>
+                </td>
+                <td>
+                  <strong>{activity.user?.name || 'Unknown'}</strong>
+                  <br />
+                  <small className="text-muted">{activity.user?.email}</small>
+                </td>
+                <td>
+                  <span className="fw-bold text-success">{activity.duration}</span> minutes
+                </td>
+                <td>
+                  {new Date(activity.timestamp).toLocaleDateString()}
+                  <br />
+                  <small className="text-muted">
+                    {new Date(activity.timestamp).toLocaleTimeString()}
+                  </small>
+                </td>
+                <td>
+                  <span className="badge bg-secondary">
+                    {activity.user?.team?.name || 'No Team'}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       {activities.length === 0 && (
-        <div className="text-center">
-          <p>No activities found.</p>
+        <div className="text-center py-5">
+          <div className="mb-3">
+            <i className="bi bi-clipboard-data" style={{fontSize: '3rem', color: '#6c757d'}}></i>
+          </div>
+          <h4 className="text-muted">No activities found</h4>
+          <p className="text-muted">Start tracking your fitness activities!</p>
         </div>
       )}
     </div>

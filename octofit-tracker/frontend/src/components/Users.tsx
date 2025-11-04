@@ -50,31 +50,83 @@ const Users: React.FC = () => {
     }
   };
 
-  if (loading) return <div className="text-center">Loading users...</div>;
-  if (error) return <div className="alert alert-danger">Error: {error}</div>;
+  if (loading) return (
+    <div className="loading-spinner">
+      <div className="spinner-border text-primary" role="status">
+        <span className="visually-hidden">Loading users...</span>
+      </div>
+    </div>
+  );
+  if (error) return <div className="alert alert-danger error-alert">Error: {error}</div>;
 
   return (
     <div>
-      <h2>Users</h2>
-      <div className="row">
-        {users.map((user) => (
-          <div key={user.id} className="col-md-6 col-lg-4 mb-3">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">{user.name}</h5>
-                <p className="card-text">
-                  <strong>Email:</strong> {user.email}<br />
-                  <strong>Team:</strong> {user.team?.name || 'No Team'}<br />
-                  <strong>User ID:</strong> {user.id}
-                </p>
-              </div>
-            </div>
-          </div>
-        ))}
+      <h1 className="page-title">👤 Users</h1>
+      <div className="table-container">
+        <table className="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th style={{width: '80px'}}>ID</th>
+              <th>User</th>
+              <th>Email</th>
+              <th>Team</th>
+              <th style={{width: '150px'}}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td>
+                  <span className="badge bg-secondary">{user.id}</span>
+                </td>
+                <td>
+                  <div className="d-flex align-items-center">
+                    <div className="me-3">
+                      <div className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" 
+                           style={{width: '40px', height: '40px', fontSize: '1.2rem'}}>
+                        {user.name.charAt(0).toUpperCase()}
+                      </div>
+                    </div>
+                    <div>
+                      <strong className="fs-6">{user.name}</strong>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <a href={`mailto:${user.email}`} className="text-decoration-none">
+                    {user.email}
+                  </a>
+                </td>
+                <td>
+                  <span className={`badge ${
+                    user.team?.name === 'Marvel' ? 'bg-danger' : 
+                    user.team?.name === 'DC' ? 'bg-info' : 
+                    'bg-secondary'
+                  }`}>
+                    {user.team?.name || 'No Team'}
+                  </span>
+                </td>
+                <td>
+                  <button className="btn btn-sm btn-outline-primary me-1">
+                    Profile
+                  </button>
+                  <button className="btn btn-sm btn-outline-secondary">
+                    Edit
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       {users.length === 0 && (
-        <div className="text-center">
-          <p>No users found.</p>
+        <div className="text-center py-5">
+          <div className="mb-3">
+            <i className="bi bi-person-plus" style={{fontSize: '3rem', color: '#6c757d'}}></i>
+          </div>
+          <h4 className="text-muted">No users found</h4>
+          <p className="text-muted">Add users to start tracking fitness activities!</p>
+          <button className="btn btn-custom">Add User</button>
         </div>
       )}
     </div>
