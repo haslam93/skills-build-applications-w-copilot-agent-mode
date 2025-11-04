@@ -16,6 +16,7 @@ const Users = () => {
         ? `https://${codespace}-8000.app.github.dev`
         : 'http://localhost:8000';
       const apiUrl = `${baseUrl}/api/users/`;
+      // Expected endpoint format: -8000.app.github.dev/api/users
       
       console.log('Fetching users from:', apiUrl);
       

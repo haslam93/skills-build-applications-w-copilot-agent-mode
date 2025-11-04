@@ -16,6 +16,7 @@ const Teams = () => {
         ? `https://${codespace}-8000.app.github.dev`
         : 'http://localhost:8000';
       const apiUrl = `${baseUrl}/api/teams/`;
+      // Expected endpoint format: -8000.app.github.dev/api/teams
       
       console.log('Fetching teams from:', apiUrl);
       

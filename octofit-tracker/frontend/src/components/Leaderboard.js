@@ -16,6 +16,7 @@ const Leaderboard = () => {
         ? `https://${codespace}-8000.app.github.dev`
         : 'http://localhost:8000';
       const apiUrl = `${baseUrl}/api/leaderboard/`;
+      // Expected endpoint format: -8000.app.github.dev/api/leaderboard
       
       console.log('Fetching leaderboard from:', apiUrl);
       

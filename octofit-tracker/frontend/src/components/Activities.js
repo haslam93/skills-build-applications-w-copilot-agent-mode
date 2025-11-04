@@ -16,6 +16,7 @@ const Activities = () => {
         ? `https://${codespace}-8000.app.github.dev`
         : 'http://localhost:8000';
       const apiUrl = `${baseUrl}/api/activities/`;
+      // Expected endpoint format: -8000.app.github.dev/api/activities
       
       console.log('Fetching activities from:', apiUrl);
       
