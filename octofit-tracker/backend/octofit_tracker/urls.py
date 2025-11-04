@@ -21,6 +21,7 @@ import os
 
 # Configure URLs based on environment (codespace vs localhost)
 codespace_name = os.environ.get('CODESPACE_NAME')
+# Codespace URL format: https://$CODESPACE_NAME-8000.app.github.dev
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
