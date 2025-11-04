@@ -17,6 +17,10 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from .views import UserViewSet, TeamViewSet, ActivityViewSet, WorkoutViewSet, LeaderboardViewSet, api_root
+import os
+
+# Configure URLs based on environment (codespace vs localhost)
+codespace_name = os.environ.get('CODESPACE_NAME')
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
